@@ -87,3 +87,55 @@ void serialEvent(Serial port){
    }
 }
 ```
+
+
+```arduino
+#define LINE_DETECT_WHITE 1
+#define NO_LINE_SENSOR 5
+
+int LineSensorPin[NO_LINE_SENSOR] = {1, 2, 3, 4, 5};
+int LineSensorData[NO_LINE_SENSOR] = {0, 0, 0, 0, 0};
+
+void read_line_sensor(void) 
+{
+  int i;
+  for (int i = 0; i < NO_LINE_SENSOR; i++) 
+  {
+  
+    LineSensorData[i] = digitalRead(LineSensorPin[i]);
+  }
+
+}
+
+void send_serial_data(void) 
+{
+  int i;
+  
+    Serial.print("*");
+    for(i=0;i<NO_LINE_SENSOR;i++) 
+  {
+  
+    Serial.print(LineSensorData[i]);
+    Serial.print(" ");
+  }
+   Serial.println("#");
+   Serial.println("");
+
+}
+
+void setup() {
+  int i;
+  for (i=0;i<NO_LINE_SENSOR;i++) 
+  {
+    pinMode(LineSensorPin[i], INPUT);
+  }
+  Serial.begin(115200);
+
+}
+
+void loop() {
+  read_line_sensor();
+  send_serial_data();
+  delay(500);
+}
+```
